@@ -1,1 +1,1 @@
-solved leetcode qns
+Solved Leetcode Questions
