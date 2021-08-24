@@ -12,9 +12,12 @@
 				"-std=c++11",
 				"-g",
 				"${file}", // specify input file 
+				//"${workspaceFolder}/cplusplus//sample-function.cpp",
 				//"${workspaceFolder}/cplusplus//*.cpp", // compile all C++ files
 				"-o",
-				"${fileDirname}/${fileBasenameNoExtension}.exe"
+				"${fileDirname}/${fileBasenameNoExtension}.exe",
+				"&&", 
+				"${fileDirname}/${fileBasenameNoExtension}.exe" // run executable
 			],
 			"options": {
 				"cwd": "${fileDirname}"
