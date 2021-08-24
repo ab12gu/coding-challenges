@@ -34,3 +34,4 @@
 
 ## C++ self-additions
 *.dSYM
+*.DS_Store
