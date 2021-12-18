@@ -27,14 +27,10 @@ class Solution:
         while an_integer > 0:
             temp = an_integer % 10
             digits.append(temp)
-            an_integer = round((an_integer-temp)/10)
+            an_integer = (an_integer-temp) // 10
 
         digits.reverse()
         return digits
-
-
-
-
 
 
 if __name__ == '__main__':
