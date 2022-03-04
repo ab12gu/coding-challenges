@@ -7,7 +7,7 @@
 
 def recurse(cart, group):
   for item in cart:
-    if item == group[0]:
+    if item == group[0] or group[0] == "anything":
       if len(group) == 1:
         return 1
       return recurse(cart[1:], group[1:])
@@ -20,8 +20,8 @@ def isWinner(group1, group2, cart):
   return (recurse(cart, group))
 
 if __name__ == "__main__":
-  group1 = ["pear", "peach", "apple"]
-  group2 = ["kiwi", "tangerine"]
+  group1 = ["pear", "peach", "apple", "anything"]
+  group2 = ["kiwi"]
   cart = ["pear", "peach", "orange", "apple","kiwi"]
   
   print(isWinner(group1, group2, cart))
