@@ -89,53 +89,45 @@ def extract_images(data_folder):
         ##
         query_img = cv2.imread('iphone.jpeg') 
         train_img = cv2.imread(imfile)
-
-        img1 = cv2.imread('iphone.jpeg', 0)          # query Image
-        img2 = cv2.imread(imfile,0)  # target Image
-
-        # Initiate SIFT detector
+        
+        # Convert it to grayscale
+        query_img_bw = cv2.cvtColor(query_img,cv2.COLOR_BGR2GRAY)
+        train_img_bw = cv2.cvtColor(train_img, cv2.COLOR_BGR2GRAY)
+        
+        # Initialize the ORB detector algorithm
         orb = cv2.ORB_create()
+        
+        # Now detect the keypoints and compute
+        # the descriptors for the query image
+        # and train image
+        queryKeypoints, queryDescriptors = orb.detectAndCompute(query_img_bw,None)
+        trainKeypoints, trainDescriptors = orb.detectAndCompute(train_img_bw,None)
+        
+        # Initialize the Matcher for matching
+        # the keypoints and then match the
+        # keypoints
+        matcher = cv2.BFMatcher()
+        matches = matcher.match(queryDescriptors,trainDescriptors)
+        
+        # draw the matches to the final image
+        # containing both the images the drawMatches()
+        # function takes both images and keypoints
+        # and outputs the matched query image with
+        # its train image
+        final_img = cv2.drawMatches(query_img, queryKeypoints,
+        train_img, trainKeypoints, matches[:50],None)
 
-        # find the keypoints and descriptors with ORB
-        kp1, des1 = orb.detectAndCompute(img1,None)
-        kp2, des2 = orb.detectAndCompute(img2,None)
-
-        # create BFMatcher object
-        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-
-        # Match descriptors.
-        matches = bf.match(des1,des2)
-
-        # Sort them in the order of their distance.
-        matches = sorted(matches, key = lambda x:x.distance)
-
-        good_matches = matches[:30]
-
-        src_pts = np.float32([ kp1[m.queryIdx].pt for m in good_matches     ]).reshape(-1,1,2)
-        dst_pts = np.float32([ kp2[m.trainIdx].pt for m in good_matches ]).reshape(-1,1,2)
-        M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
-        matchesMask = mask.ravel().tolist()
-        h,w = img1.shape[:2]
-        pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-
-        dst = cv2.perspectiveTransform(pts,M)
-        dst += (w, 0)  # adding offset
-
-        draw_params = dict(matchColor = (0,255,0), # draw matches in green color
-                    singlePointColor = None,
-                    matchesMask = matchesMask, # draw only inliers
-                    flags = 2)
-
-        img3 = cv2.drawMatches(img1,kp1,img2,kp2,good_matches, None,**draw_params)
-
-        # Draw bounding box in Red
-        img3 = cv2.polylines(img3, [np.int32(dst)], True, (0,0,255),3, cv2.LINE_AA)
-
-        cv2.imshow("result", img3)
-        cv2.waitKey()
-        # or another option for display output
-        #plt.imshow(img3, 'result'), plt.show()
-                
+        print(matches[:5])
+        print([queryKeypoints[1]])
+        print([queryDescriptors[1]])
+        print(trainKeypoints[1])
+        print([trainDescriptors[1]])
+        
+        final_img = cv2.resize(final_img, (1000,650))
+         
+        # Show the final image
+        cv2.imshow("Matches", final_img)
+        cv2.waitKey(3000)
 
 
     #cv2.imshow('',template)
