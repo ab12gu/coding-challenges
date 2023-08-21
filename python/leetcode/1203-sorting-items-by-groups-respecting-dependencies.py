@@ -1,52 +1,53 @@
-class Solution:
-    def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
-        nums = [i for i in range(n)]
-        in_group = [0 for i in range(m)]
-        no_group = []
+# fileanme: 1203... leetcode.py
+# by: Abhay Gupta
+# date: 23-08-21
 
+class Solution:
+    def sortItems(self, n: int, m: int, group: list[int], beforeItems: list[list[int]]) -> list[int]:
+        nums                = [i] * n
+        group_lengths       = [0] * m
+        no_group            = []
+        beforeGroup         = [[]] * n 
+        nums_group_lengths  = [[]] * m
+        group2              = [[]] * m
+
+        ### PRINT INPUT AS A TABLE
         #print("INPUT")
         # for i in range(n):
         # print(nums[i], group[i], beforeItems[i])
-        #print("END")
+        #print("END"
 
-        beforeGroup = [[] for i in range(n)]
-        elems_in_group = [[] for i in range(m)]
-
-        # find size of groups
+        # find size of groups and numbers in each group
         for num, group_num in enumerate(group):
             if group_num == -1:
                 no_group.append(num)
             else:
-                in_group[group_num] += 1
-                elems_in_group[group_num].append(num)
+                group_lengths[group_num] += 1
+                nums_group_lengths[group_num].append(num)
 
-        group2 = [[] for i in range(m)]
+        # fill out group_lengths with blanks based on size
+        for c, i in enumerate(group_lengths):
+            group_lengths[c] = [-1] * i 
 
-        # fill out in_group with blanks based on size
-        for c, i in enumerate(in_group):
-            in_group[c] = [-1 for j in range(i)]
-
-        # print(in_group)
         # add element to group in sorted position
         for c, i in enumerate(beforeItems):  # iterate through before items
             if group[c] > -1:
-
-                # print(in_group[group[c]])
+                # print(group_lengths[group[c]])
                 # print(i)
 
                 temp = i.copy()
                 for b, j in enumerate(temp):  # find each before item per element
-                    if j not in elems_in_group[group[c]]:  # if before item isn't supposed to be there
+                    if j not in nums_group_lengths[group[c]]:  # if before item isn't supposed to be there
                         beforeGroup[c].append(j)
                         i.remove(j)  # remove before item from list
-                        # in_group[group[c]].pop()
+                        # group_lengths[group[c]].pop()
 
                 # print(i)
                 # print(group[c], "len", len(i), i, nums[c])
-                # print(in_group[group[c]], nums)
+                # print(group_lengths[group[c]], nums)
 
                 # print(nums[c], len(i))
-                in_group[group[c]][len(i)] = nums[c]
+                group_lengths[group[c]][len(i)] = nums[c]
 
                 check = False
                 for d, elem in enumerate(group2[group[c]]):
@@ -94,29 +95,29 @@ class Solution:
                     curr.append(c)
             now.append(curr)
 
-        # print("ING", in_group)
+        # print("ING", group_lengths)
         # print("now", now)
-        in_group = now
+        group_lengths = now
 
         # return empty list if elem in group cannot be sorted
-        for i in in_group:
+        for i in group_lengths:
             for j in i:
                 if j == -1:
                     # print("YO MAMA")
-                    # print(in_group)
+                    # print(group_lengths)
                     # print(i)
                     return []
 
         #############
 
-        [in_group.append([i]) for i in no_group]
+        [group_lengths.append([i]) for i in no_group]
         output = [[]]
-        # print("IG", in_group)
+        # print("IG", group_lengths)
         # print("BG", beforeGroup)
 
         # sort groups
         for c, i in enumerate(beforeGroup):
-            for j in in_group:
+            for j in group_lengths:
                 if nums[c] in j:  # current in j-group
                     flag = False
 
@@ -132,7 +133,7 @@ class Solution:
             # print("out", output)
             curr = []
             for elemB in i:
-                for subGroup in in_group:
+                for subGroup in group_lengths:
                     if elemB in subGroup:
                         flag = False
                         for d, out in enumerate(output):
@@ -140,7 +141,7 @@ class Solution:
                             if subGroup in out:
                                 if d == e:
                                     # print("NEED 2 FINISH 2")
-                                    for z in in_group:
+                                    for z in group_lengths:
                                         if nums[c] in z:
                                             # print("ZZ", z)
                                             break
@@ -197,3 +198,12 @@ class Solution:
                 temp.extend(j)
 
         return temp
+
+# Test Cases
+n = 8
+m = 2
+group = [-1,-1,1,0,0,1,0,-1]
+beforeItems = [[],[6],[5],[6],[3],[],[4],[]]
+
+class_instance = Solution()
+class_instance.sortItems(n, m, group, beforeItems)
