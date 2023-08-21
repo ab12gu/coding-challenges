@@ -4,7 +4,6 @@
 
 class Solution:
     def sortItems(self, n: int, m: int, group: list[int], beforeItems: list[list[int]]) -> list[int]:
-        nums                = [i] * n
         group_lengths       = [0] * m
         no_group            = []
         beforeGroup         = [[]] * n 
