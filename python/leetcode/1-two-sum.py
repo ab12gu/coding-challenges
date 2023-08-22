@@ -11,6 +11,17 @@
 
 class Solution:
 
+  def twoSum(self, nums: List[int], target: int) -> List[int]:
+  
+  # better by only including previous values for search
+  # shortest possible imo
+  prev = {}
+  for c, i in enumerate(nums):
+    if (target - i) in prev:
+      return (c, prev[target - i])
+    prev[i] = c
+
+
   # shortest solution that I could think of O(n)
   hashmap = {}
   for c, i in enumerate(nums):
@@ -36,7 +47,6 @@ class Solution:
 
   # optimized to use half the array 
   # runtime: [n], [n-1] ..... 1 + 2 + 3 ... + n = n(n + 1)/2 = n**2
-  def twoSum(self, nums: List[int], target: int) -> List[int]:
     
     for c,i in enumerate(nums):
       for d,j in enumerate(nums):
