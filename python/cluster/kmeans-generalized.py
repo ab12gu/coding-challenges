@@ -19,13 +19,15 @@ class Clustering:
         """ euclidean distance """
         return sum((i-j)**2 for i,j in zip(p1,p2))**(1/2)
 
-    def mean(self, clist):
+    def mean(self, cluster):
         """ mean of numbers """
-        return (*(sum(i)/len(clist) for i in zip(*clist)),)
+        return (*(sum(i)/len(cluster) for i in zip(*cluster)),)
 
 
     def plot(self, clusters, centroids, k):
         """ scatterplot of points """
+
+        # find even distribution of colors based on # of clusters
         num_of_colors = [i/k for i in list(range(k))]
         colors = iter(plt.cm.rainbow(num_of_colors))
 
@@ -44,8 +46,7 @@ class Clustering:
         num_of_coords = len(points[0])
 
         while(1):
-
-            alist, blist = [], []
+    
             centroids = new_centroids
             clusters = [[] for _ in range(k)]
             
@@ -54,6 +55,7 @@ class Clustering:
                 shortest_dist = self.dist(centroids[0], i)
                 cluster = 0
                 
+                # calculate distance of point to each centroid
                 for c, j in enumerate(centroids[1:]):
                     distance = self.dist(j, i)
                     if distance < shortest_dist:
@@ -72,6 +74,8 @@ class Clustering:
                 # plot if data is 2D
                 if num_of_coords == 2:
                     self.plot(clusters, centroids, k)
+
+                # return the centroids
                 return centroids
 
 if __name__ == "__main__":
