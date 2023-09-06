@@ -24,4 +24,4 @@ class Solution:
             if i < remainder:
                 r += 1
 
-        return outpu
+        return output
