@@ -1,7 +1,6 @@
 -- 
 -- filename: temp.sql
 -- by: Abhay Gupta
--- date created: 24-01-26
 --
 -- desc:
 -- 1. How many sql tables do you need to store doctor/patient data?

@@ -1,7 +1,6 @@
 # 
 # filename: reversable-number-check.py
 # by: Abhay Gupta
-# date created: 24-01-24
 #
 # desc: check if a number and it's reverse add to a number w/ all odd values
 
