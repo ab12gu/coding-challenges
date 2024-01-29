@@ -1,0 +1,7 @@
+by: Abhay Gupta
+
+Qn 16:
+
+Write a one-line Linux command to find all the png files that start with "image-" recurively in the current directory and calculate their md5sums in the shortest amount of time on a multi-core Linux server. 
+
+find . -name "image-*.png" -type f -print0 | xargs -0 -P $(nproc) -I {} md5sum {}

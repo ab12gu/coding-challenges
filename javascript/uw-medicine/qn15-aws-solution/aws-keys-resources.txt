@@ -1,0 +1,9 @@
+-- by Abhay Gupta
+
+15. Explain why AWS secret keys should be kept securely and what AWS technology should be used whenever possible to control access to AWS resources.
+
+AWS keys are essentially a more secure version of user generated passwords. You can imagine if someone gets a hold of your password, it would work similarly, where they can start accessing your resources and potentially change things within your system. A major difference is that AWS key's aren't recoverable and will need to generate new ones to get access to the resources if lost. 
+
+In order to control access of the AWS resources, it is recommended to use the IAM (Identity and Access Management). It allows one to manage users, groups, and their permissions within AWS. 
+
+
