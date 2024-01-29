@@ -1,0 +1,26 @@
+--
+-- by: Abhay Gupta 
+--
+qn 14
+What is the difference between MySQL, MariaDB, PostgreSQL and Redshift? Describe the pros and cons of each.
+
+
+MySQL
+- 
+- 
+- 
+
+MariaDB
+- 
+- 
+- 
+
+PostgreSQL
+- 
+- 
+- 
+
+Redshift
+- 
+- 
+- 

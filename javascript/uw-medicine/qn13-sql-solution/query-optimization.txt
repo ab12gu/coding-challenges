@@ -1,0 +1,10 @@
+--
+-- by: Abhay Gupta
+--
+-- qn 13
+
+If you had to do the above query very often, how could you speed it up for simplicity and query speed?
+
+To speed up the query for simplicity and speed, one can add indexes to columns within each table. It allows the data to be accessed as a hashmap in software, where the user won't be able to see the index when retrieving the data. Additionally as seen for all browsers, you can implement a cache system to store the most commonly used data and/or queries for quick access. 
+
+Some more generic changes that can be made are that you can change the datatypes to be more specific, such as changing the varchars to ints or updating your system hardware through adding more ram or faster storage.
