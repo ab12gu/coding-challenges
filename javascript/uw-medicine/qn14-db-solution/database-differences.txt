@@ -5,22 +5,22 @@ qn 14
 What is the difference between MySQL, MariaDB, PostgreSQL and Redshift? Describe the pros and cons of each.
 
 
-MySQL
-- 
-- 
-- 
+MySQL (popular for web)
+- Open-source relational data management system (RDBMS)
+- Pros: Easy to use, scalability, flexibility, speed, reliability, low cost
+- Cons: Can't handle large DBs well, poor complex query handling, and lack of support, less features than other Dbs
 
-MariaDB
-- 
-- 
-- 
+MariaDB (popular for web)
+- Open-Source RDBMS based on MySQL (a fork)
+- Pros: Speed, scalability, security, compatible with MySQL, addresses large dB issues
+- Cons: smaller user community than MySQL
 
 PostgreSQL
-- 
-- 
-- 
+- Object relational DB rather than just relational (ORDBMS)
+- Pros: Robustness, reliability, large db handling, complex query handling, nice search features, extensibility, highly ACID-compliant
+- Cons: slower than prior 2 dbs and harder to use
 
-Redshift
-- 
-- 
-- 
+Redshift (designed for large scale data-analytics)
+- Cloud-based data warehouse service based on PostgreSQL
+- Pros: Scalability, speed, low-cost, large db handling, complex query handling, integration w/ aws services
+- Cons: Limited support for transactions and some SQL features
