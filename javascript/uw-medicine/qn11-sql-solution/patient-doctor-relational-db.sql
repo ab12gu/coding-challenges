@@ -10,7 +10,7 @@
 
 -- doctor table
 -- the data stores the following doctors' data: 
-l-- - unique ID, first name, last name, practice address
+-- - unique ID, first name, last name, practice address
 CREATE TABLE Doctors {
     DoctorId int,
     FirstName varchar(20) NOT NULL,
