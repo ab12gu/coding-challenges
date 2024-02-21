@@ -39,8 +39,7 @@
 # the first step requires an import...
 import sys
 
-
-def compare_sensors():
+def extract_data():
     """ main sensor comparision script """
 
     # import in data via command line
@@ -72,9 +71,6 @@ def compare_sensors():
 
     return data
 
-
-
-
 def plot_data(data):
 
     # import plotting package
@@ -83,28 +79,95 @@ def plot_data(data):
 
     # Separate data into x and y values (assuming first column is x, second is y)
     time = data[0]
-    encoder = data[1]
-    potentiometer = data[2]
+    encoder = list(x / 2048 * 360 / 30 + 180 for x in data[1])
+    potentiometer = list(map(lambda x: x / 255 * 5, data[2]))
+
+    print("min/max encoder", min(data[1]), max(data[1]))
+    print("min/max encoder", min(encoder), max(encoder))
+    print("min/max potentiometer", min(data[2]), max(data[2]))
+    print("min/max potentiometer", min(potentiometer), max(potentiometer))
+
+    # Mulitple plots
+    fig, axes = plt.subplots(3)
 
     # Create the plot
-    plt.plot(time, encoder, label = "Encoder (degrees)")
-    plt.plot(time, potentiometer, label = "Potentiometer (V)")
+    axes[0].plot(time, encoder)
+    axes[0].set_xlabel('Time (seconds)')
+    axes[0].set_ylabel('Output Shaft Position (degrees) and Time')
 
     # Customize the plot (optional)
-    plt.xlabel('Time (seconds)')
-    plt.ylabel('Output Shaft Position (degrees) and Voltage')
-    plt.title('Encoder & Potentiometer over time')
+    axes[1].plot(time, potentiometer)
+    axes[1].set_xlabel('Time (seconds)')
+    axes[1].set_ylabel('Potentiometer Reading (Voltage) and Time')
+    #axes[1].set_title('Encoder & Potentiometer over time')
+
+    # Plot potentiometer reading vs output shaft position
+    axes[2].plot(encoder, potentiometer)
+    axes[2].set_xlabel('Output Shaft Position (degrees)')
+    axes[2].set_ylabel('Potentiometer Reading (volts)')
+    #axes[2].set_title('Potentiometer reading vs output shaft position')
 
     # Show the plot
-    plt.legend()
     plt.show()
 
+def find_sensor_errors(data):
+    """ Compare data and find if error """
+
+    # Total data length
+    data_len = len(data[0])
+
+    # Max voltage reading
+    volts = 5
+
+    # Max bit range for potentiometer
+    bit_volts = 255
+    
+    # Max encoder rating per revolution
+    encoder = 2048
+
+    # Gear Ratio
+    gear_ratio = 30
+
+    # Number of degrees per revolution
+    degrees = 360
+
+    # Encoder - Potentiometer ratio
+    ratio = volts / degrees
+
+    # Calibration Function
+    encoder = list(x / encoder * degrees / gear_ratio for x in data[1])
+    potentiometer = list(map(lambda x: x / bit_volts * volts, data[2]))
+
+    # Get data range for calibration
+    for index in range(data_len):
+        if data[0][index] > 0.5:
+            break
+
+    # Calibration data
+    calibration_data = encoder[index-1:] * ratio - potentiometer[index-1:]
+
+    max_noise = max(abs(calibration_data))
+
+    # Margin of Safety for Noise
+    safety_ratio = 1.1
+
+    # Check if remaining data has an error
+    for i in range(index, data_len):
+        
+        # extract data point
+        data_difference = encoder[i] * ratio - potentiometer[i]
+
+        if abs(data_difference) > safety_ratio * max_noise:
+            print("Error Occured at ", i, "seconds")
 
 if __name__ == "__main__":
     """ run file directly """
 
     # extract data
-    data = compare_sensors()
+    data = extract_data()
 
     # plot data
     plot_data(data)
+
+    # compare data and find if error
+    find_sensor_errors(data)
