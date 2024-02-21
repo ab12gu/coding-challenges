@@ -147,7 +147,8 @@ def find_sensor_errors(data):
     calibration_data = [abs(x * ratio - y) for x, y in zip(encoder[0:index-1], potentiometer[0:index-1])]
     #calibration_data = encoder[index-1:] * ratio - potentiometer[index-1:]
 
-    max_noise = max(calibration_data)
+    offset = sum(calibration_data)/len(calibration_data)
+    max_noise = max(calibration_data) - offset
     #print("max noise:", max_noise)
 
     # Margin of Safety for Noise
@@ -161,7 +162,9 @@ def find_sensor_errors(data):
         data_difference = encoder[i] * ratio - potentiometer[i]
         #check.append(abs(data_difference))
 
-        if abs(data_difference) > safety_ratio * max_noise:
+        #print(encoder[i] * ratio, potentiometer[i], "data difference: ", data_difference, "max noise: ", max_noise, "Time", data[0][i])
+
+        if abs(data_difference) - offset > safety_ratio * max_noise:
             print("Error Occured at ", data[0][i], "seconds")
             return i
 
@@ -176,7 +179,7 @@ if __name__ == "__main__":
     data = extract_data()
 
     # plot data
-    #plot_data(data, None)
+    plot_data(data, None)
 
     # compare data and find if error
     error_index = find_sensor_errors(data)
