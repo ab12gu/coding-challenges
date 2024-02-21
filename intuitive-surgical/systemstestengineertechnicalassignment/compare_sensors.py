@@ -71,7 +71,7 @@ def extract_data():
 
     return data
 
-def plot_data(data):
+def plot_data(data, error_index):
 
     # import plotting package
     # WSL plot instructions: https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
@@ -144,21 +144,30 @@ def find_sensor_errors(data):
             break
 
     # Calibration data
-    calibration_data = encoder[index-1:] * ratio - potentiometer[index-1:]
+    calibration_data = [abs(x * ratio - y) for x, y in zip(encoder[0:index-1], potentiometer[0:index-1])]
+    #calibration_data = encoder[index-1:] * ratio - potentiometer[index-1:]
 
-    max_noise = max(abs(calibration_data))
+    max_noise = max(calibration_data)
+    #print("max noise:", max_noise)
 
     # Margin of Safety for Noise
     safety_ratio = 1.1
 
+    #check = []
     # Check if remaining data has an error
     for i in range(index, data_len):
         
         # extract data point
         data_difference = encoder[i] * ratio - potentiometer[i]
+        #check.append(abs(data_difference))
 
         if abs(data_difference) > safety_ratio * max_noise:
-            print("Error Occured at ", i, "seconds")
+            print("Error Occured at ", data[0][i], "seconds")
+            return i
+
+    #print("check", max(check))
+
+    return None
 
 if __name__ == "__main__":
     """ run file directly """
@@ -167,7 +176,10 @@ if __name__ == "__main__":
     data = extract_data()
 
     # plot data
-    plot_data(data)
+    #plot_data(data, None)
 
     # compare data and find if error
-    find_sensor_errors(data)
+    error_index = find_sensor_errors(data)
+
+    # check error location
+    #plot_data(data, error_index)
