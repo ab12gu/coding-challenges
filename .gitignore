@@ -35,3 +35,6 @@
 ## C++ self-additions
 *.dSYM
 *.DS_Store
+
+## intuitive surgical removal
+intuitive-surigical/
