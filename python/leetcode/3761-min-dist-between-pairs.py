@@ -1,24 +1,23 @@
 class Solution:
     def minMirrorPairDistance(self, nums: List[int]) -> int:
+
         numsR = []
         for num in nums:
-            temp = ""
-            num = [int(x) for x in str(num)]
-            for i in range(len(num)):
-                temp = temp + str(num[-i-1])
-            numsR.append(int(temp))
+            
+            num = [x for x in str(num)]
+            num.reverse()
+            numsR.append(int("".join(num)))
 
         length = len(nums) 
-        output = []
+        output = length
+
         for j in range(length):
-            for i in range(j+1, length):
+            for i in range(j+1, min(j + output, length)):
                 if numsR[j] == nums[i]:
-                    output.append(abs(j-i))
+                    dist = abs(j-i)
+                    if dist < output:
+                        output = dist
 
-        if not output:
+        if output == length:
             return -1
-        return min(list(filter(lambda x: x > 0, output)))
-
-
-
-       
+        return output
