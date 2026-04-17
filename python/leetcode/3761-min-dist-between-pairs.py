@@ -2,22 +2,29 @@ class Solution:
     def minMirrorPairDistance(self, nums: List[int]) -> int:
 
         numsR = []
-        for num in nums:
-            
+        table = {}
+
+        for c, num in enumerate(nums):
+
             num = [x for x in str(num)]
             num.reverse()
-            numsR.append(int("".join(num)))
+            num = int("".join(num))
 
-        length = len(nums) 
-        output = length
+            if num in table:
+                table[num].append(c)
+            else:
+                table[num] = [c]
 
-        for j in range(length):
-            for i in range(j+1, min(j + output, length)):
-                if numsR[j] == nums[i]:
-                    dist = abs(j-i)
-                    if dist < output:
-                        output = dist
+        output = -1
 
-        if output == length:
-            return -1
+        for j, num in enumerate(nums):    
+            if num in table:
+                for i in table[num]:
+                    if i < j:
+                        dist = abs(j-i)
+                        if output == -1 or dist < output:
+                            output = dist
+                            continue
+                        if output > -1 and dist > output:
+                            break
         return output
