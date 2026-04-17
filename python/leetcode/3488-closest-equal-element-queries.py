@@ -1,4 +1,4 @@
-class Solution:
+ class Solution:
     def solveQueries(self, nums: List[int], queries: List[int]) -> List[int]:
 
         q_len = len(queries)
@@ -16,9 +16,11 @@ class Solution:
 
         for c, q in enumerate(queries):
             if nums[q] in sorted_nums_dict:
-                data = [abs(q - x) for x in sorted_nums_dict[nums[q]]]
-                if len(data)-1:
-                    data = data + [high - x for x in data] 
+                data = []
+                for x in sorted_nums_dict[nums[q]]:
+                    y = abs(q-x)
+                    data.extend( (y, abs(high-y)) )
+                if data[0] != 0 or len(data) > 2:
                     output[c] = min(filter(lambda x: x != 0, data))
 
         return output
@@ -37,4 +39,4 @@ class Solution:
         return output
  """       
 
-        
+              
