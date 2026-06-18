@@ -2,7 +2,6 @@ class Solution:
     def isPalindrome(self, s: str) -> bool:
 
       s = s.lower()
-
       new_string = ""
       left = ord('a'); right = ord('z')
 
@@ -15,7 +14,14 @@ class Solution:
       for i in range(len(new_string) // 2):
         if new_string[i] != new_string[-(i + 1)]:
           return False
-      
       return True
-        
+
+    def isPalindromeFaster(self, string):
+        string = string.lower()
+
+        string = ''.join([s for s in string if s.isalnum()])
+
+        return string == string[::-1]
+
+
 
