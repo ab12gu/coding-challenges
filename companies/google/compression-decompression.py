@@ -12,15 +12,24 @@ class Data:
     def decompression(self, string):
         substring = ""
         outputstring = ""
+        number = False
+        repeat = ""
         for i in string:
-            if i.isdigit():
-                repeat = int(i)
+            if i == "[":
+                number = True
+                repeat = int(repeat)
+            if i.isdigit() and number == False:
+                repeat += i
+                pass
             if i.isalpha():
                 substring += i
+                pass
             if i == "]":
                 for j in range(repeat):
                     outputstring += substring
                 substring = ""
+                number = False
+                repeat = ""
         if substring:
             outputstring += substring
 
@@ -28,7 +37,7 @@ class Data:
 
 if __name__ == '__main__':
 
-    string = '3[abc]4[ab]c'
+    string = '300[abc]4[ab]c'
     
     data = Data()
     string = data.decompression(string)
