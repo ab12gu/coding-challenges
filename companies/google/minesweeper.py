@@ -29,15 +29,26 @@ class Matrix:
 
     def click(self, row, col):
         if row <= self.rows and col <= self.cols:
-            i,j = row + 1, col
-            print(self.rows,i)
-            if i <= self.rows:
-                if self.grid[i][j] == False:
-                    self.grid[i][j] = 0
-                    self.click(i,j)
-                if self.grid[i][j] == True:
-                    self.grid[i][j] = 1
-                    self.click(i,j)
+
+            row = [row, row, row+1, row-1]
+            col = [col+1, col-1, col, col]
+
+            for i,j in zip(row,col):
+                #print("MAX", self.rows,self.cols)
+                print("CURR", i, j)
+                print(self.grid)
+                if i >= 0 and i <= self.rows-1 and j >=0 and j <= self.cols-1:
+                    print(len(self.grid))
+                    print(len(self.grid[1]))
+                    if self.grid[i][j] == False:
+                        print("transform", i,j)
+                        self.grid[i][j] = 1
+                        self.click(i,j)
+                    if self.grid[i][j] == True:
+                        self.grid[i][j] = 2
+                        self.click(i,j)
+                    else:
+                        return
 
     def print(self):
         print(self.grid)
@@ -46,7 +57,7 @@ class Matrix:
 if __name__ == '__main__':
 
     matrix = Matrix();
-    matrix.resize(2, 3)
+    matrix.resize(2, 2)
     matrix.click(0, 0)
     matrix.print()
 
