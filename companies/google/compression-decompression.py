@@ -21,6 +21,9 @@ class Data:
                 for j in range(repeat):
                     outputstring += substring
                 substring = ""
+        if substring:
+            outputstring += substring
+
         return outputstring
 
 if __name__ == '__main__':
@@ -28,9 +31,7 @@ if __name__ == '__main__':
     string = '3[abc]4[ab]c'
     
     data = Data()
-
     string = data.decompression(string)
-
     print(string)
 
     
