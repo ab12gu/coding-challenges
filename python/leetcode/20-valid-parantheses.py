@@ -1,17 +1,20 @@
 class Solution:
     def isValid(self, s: str) -> bool:
-        dictionary = {"{": 0, "[": 0, "(": 0}
-        reverse = {"}": "{", "]": "[", ")": "("}
+
+        openset = set("{[(")
+        reverse = {'{': "}", "[": "]", '(': ")"}
+        d = []
 
         for i in list(s):
-            if i in dictionary:
-                dictionary[i] += 1
+            if i in openset:
+                d.append(reverse[i])
             else:
-                dictionary[reverse[i]] -= 1
+                if not d:
+                    return False
+                if d.pop() != i:
+                    return False
 
-        for i in dictionary:
-            if dictionary[i]:
-                return False
-
+        if d:
+            return False
         return True
-       
+
