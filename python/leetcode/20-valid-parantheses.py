@@ -1,12 +1,12 @@
 class Solution:
     def isValid(self, s: str) -> bool:
 
-        openset = set("{[(")
+        #openset = set("{[(")
         reverse = {'{': "}", "[": "]", '(': ")"}
         d = []
 
         for i in list(s):
-            if i in openset:
+            if i in reverse:
                 d.append(reverse[i])
             else:
                 if not d:
