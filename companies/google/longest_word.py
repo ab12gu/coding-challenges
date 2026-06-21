@@ -18,7 +18,8 @@ class LongestWord:
                 if letter == j:
                     count += 1
                     if count == length:
-                        subsequence = i
+                        if len(i) > len(subsequence):
+                            subsequence = i
                         break
                 else:
                     count = 0
@@ -33,7 +34,7 @@ class LongestWord:
 if __name__ == '__main__':
 
     S = 'helloworld'
-    D = ['ello', 'world']
+    D = ['ello', 'wor']
 
     longestword = LongestWord()
     subsequence = longestword.subsequence(S,D)
