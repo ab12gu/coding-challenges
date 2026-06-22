@@ -1,15 +1,19 @@
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        nums.reverse()
 
-        curr = nums.pop()
-        return self.longest(curr, nums)
+        length = len(nums) 
+        stack = [[nums[0]]]
 
-    def longest(self, curr, nums):
-        new = nums.pop()
-        count = 1
+        for i in range(1,length):
+            stack.append([nums[i]])
+            for j in stack:
+                if j[-1] < nums[i]:
+                    stack.append(j + [nums[i]])
 
-        if new > curr:
-            count += self.longest(new, nums)
-        
-        return count
+        longest = 1
+        for i in stack:
+            if len(i) > longest:
+                longest = len(i)
+
+        return longest
+
